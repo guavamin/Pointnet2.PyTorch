@@ -7,7 +7,8 @@
 #include "ball_query_gpu.h"
 
 cudaStream_t stream = at::cuda::getCurrentCUDAStream();
-extern THCState *state;
+
+// extern THCState *state;
 
 #define CHECK_CUDA(x) TORCH_CHECK(x.type().is_cuda(), #x, " must be a CUDAtensor ")
 #define CHECK_CONTIGUOUS(x) TORCH_CHECK(x.is_contiguous(), #x, " must be contiguous ")
@@ -21,7 +22,7 @@ int ball_query_wrapper_fast(int b, int n, int m, float radius, int nsample,
     const float *xyz = xyz_tensor.data<float>();
     int *idx = idx_tensor.data<int>();
     
-    cudaStream_t stream = THCState_getCurrentStream(state);
+//     cudaStream_t stream = THCState_getCurrentStream(state);
     ball_query_kernel_launcher_fast(b, n, m, radius, nsample, new_xyz, xyz, idx, stream);
     return 1;
 }
